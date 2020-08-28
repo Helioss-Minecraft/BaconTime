@@ -41,5 +41,5 @@
         requiredTime=3600
     }
 
-# 2.Support
+# 3.Support
  - For support join my discord server and tag me in the #general channel or pm me (kristi71111 | BacoNetworks#0001)
