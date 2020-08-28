@@ -76,13 +76,15 @@ public class BaconTime {
                 .interval(ConfigHandler.saveInterval, TimeUnit.SECONDS)
                 .delay(ConfigHandler.saveInterval, TimeUnit.SECONDS)
                 .submit(this);
-        milestoneCheck = Sponge.getScheduler()
-                .createTaskBuilder()
-                .async()
-                .execute(new MilestoneTimedTask())
-                .interval(ConfigHandler.milestoneCheckInterval, TimeUnit.SECONDS)
-                .delay(ConfigHandler.milestoneCheckInterval, TimeUnit.SECONDS)
-                .submit(this);
+        if (!ConfigHandler.AllMilestones.isEmpty()) {
+            milestoneCheck = Sponge.getScheduler()
+                    .createTaskBuilder()
+                    .async()
+                    .execute(new MilestoneTimedTask())
+                    .interval(ConfigHandler.milestoneCheckInterval, TimeUnit.SECONDS)
+                    .delay(ConfigHandler.milestoneCheckInterval, TimeUnit.SECONDS)
+                    .submit(this);
+        }
     }
 
     @Listener
