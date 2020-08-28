@@ -48,7 +48,7 @@ public class Check implements CommandExecutor {
                                     .append(Text.of(TextColors.AQUA, Helpers.OutputTime(playerRecord.getAfkTime())))
                                     .build())
                             .build());
-                    PaginationList paginationlist = new Helpers().getPaginationService().builder().footer(Text.of(TextColors.GOLD, TextStyles.BOLD, "Made by kristi71111 for BacoNetworks")).padding(Text.of("-")).title(Text.builder()
+                    PaginationList paginationlist = new Helpers().getPaginationService().builder().footer(Text.of(TextColors.GOLD, TextStyles.BOLD, "Made by kristi71111")).padding(Text.of("-")).title(Text.builder()
                             .append(Text.builder()
                                     .append(Text.of(TextColors.GOLD, TextStyles.BOLD, "{"))
                                     .append(Text.of(TextStyles.BOLD, user.getName() + "'s Activity"))
