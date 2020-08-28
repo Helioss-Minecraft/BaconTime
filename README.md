@@ -9,13 +9,15 @@
 - /playtime leaderboard <afk/active> (Shows you the leaderboard of top active or afk players)
 - /playtime reload (Reload the plugin)
 - /playtime import <plugin-name> (Import data from another plugin into this one. Currently only activetime is supported)
+- /playtime set <afk/active> <amount> <user> (Set someones afk or active time. Amount is in seconds)
 ## 1.2 Permissions 
 - bacontime.command.base (Base command)
 - bacontime.command.leaderboard (Leaderboard command) 
 - bacontime.command.check (Check command)
 - bacontime.admin.reload (Reload command)
 - bacontime.admin.import (Import command)
-- bacontime.milestones (Required for users to get milestones. Example bacontime.milestones.banana would allow the user to reach the banana milestone)
+- bacontime.admin.set (Set command)
+- bacontime.milestones (Required for users to get milestones. Example bacontime.milestones.banana would allow the user to reach the banana milestone
 # 2.Config
     # The aliases the plugin uses for commands. The first value is always displayed when running the base command!
     # Requires server restart to change!
