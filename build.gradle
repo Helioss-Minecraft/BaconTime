@@ -1,0 +1,32 @@
+plugins {
+    id 'org.spongepowered.plugin' version '0.9.0'
+    id "net.kyori.blossom" version "1.1.0"
+}
+
+
+group = pluginGroup
+version = pluginVersion
+
+sourceCompatibility = '1.8'
+targetCompatibility = '1.8'
+
+repositories {
+    maven {
+        name = 'nucleus-api'
+        url = 'http://repo.drnaylor.co.uk/artifactory/list/minecraft'
+    }
+}
+
+dependencies {
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile group: 'it.unimi.dsi', name: 'fastutil', version: '7.1.0'
+    compileOnly 'org.spongepowered:spongeapi:7.2.0'
+    compileOnly 'io.github.nucleuspowered:nucleus-api:1.2.3-SNAPSHOT-S7.0'
+    annotationProcessor 'org.spongepowered:spongeapi:7.2.0'
+}
+blossom {
+    def constants = 'src/main/java/kristi71111/bacontime/BaconTime.java'
+    replaceToken '@VERSION@', version, constants
+}
+
+sponge.plugin.id = pluginId
