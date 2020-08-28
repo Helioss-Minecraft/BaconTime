@@ -21,6 +21,7 @@ public class Helpers {
     public static String CheckPermission = "bacontime.command.check";
     public static String ReloadPermission = "bacontime.admin.reload";
     public static String ImportPermission = "bacontime.admin.import";
+    public static String SetPermission = "bacontime.admin.set";
     public static String MilestoneCheck = "bacontime.milestones";
     final BaconTime pl = BaconTime.instance;
     final Game game = pl.game;

@@ -9,7 +9,7 @@ public class BaconTimePlayerObject {
     private int activeTime;
     private int afkTime;
     private String username;
-    private UUID uuid;
+    final UUID uuid;
     private List<BaconTimeReachedMilestoneObject> milestones;
 
     public BaconTimePlayerObject(int activeTime, int afkTime, String username, UUID uuid, List<BaconTimeReachedMilestoneObject> milestones) {
@@ -22,10 +22,6 @@ public class BaconTimePlayerObject {
 
     public UUID getUUID() {
         return uuid;
-    }
-
-    public void setUUID(UUID uuid) {
-        this.uuid = uuid;
     }
 
     public int getActiveTime() {

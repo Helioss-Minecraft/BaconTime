@@ -41,6 +41,20 @@ public class CommandList {
             .executor(new Import())
             .build();
 
+    public static CommandSpec Set = CommandSpec.builder()
+            .permission(Helpers.SetPermission)
+            .arguments(
+                    GenericArguments.choices(Text.of("afk/active"),
+                            ImmutableMap.<String, String>builder()
+                                    .put("active", "active")
+                                    .put("afk", "afk")
+                                    .build()),
+                    GenericArguments.integer(Text.of("amount")),
+                    GenericArguments.optional(GenericArguments.user(Text.of("user")))
+            )
+            .executor(new Set())
+            .build();
+
     public static CommandSpec Reload = CommandSpec.builder()
             .permission(Helpers.ReloadPermission)
             .executor(new Reload())
@@ -52,6 +66,7 @@ public class CommandList {
             .child(Leaderboard, "leaderboard", "top")
             .child(Import, "import")
             .child(Reload, "reload")
+            .child(Set, "set")
             .executor(new Base())
             .build();
 

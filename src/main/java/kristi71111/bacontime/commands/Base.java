@@ -68,6 +68,18 @@ public class Base implements CommandExecutor {
                             .build())
                     .build());
         }
+        if (src.hasPermission(Helpers.SetPermission)) {
+            i++;
+            texts.add(Text.builder()
+                    .append(Text.builder()
+                            .color(TextColors.GOLD)
+                            .style(TextStyles.BOLD)
+                            .append(Text.of(" - /playtime set <afk/active> <amount> <user>"))
+                            .onClick(TextActions.suggestCommand("/playtime set"))
+                            .onHover(TextActions.showText(Text.of("Click here to set someones active or afk time!")))
+                            .build())
+                    .build());
+        }
         if (i == 0) {
             texts.add(Text.builder()
                     .append(Text.builder()

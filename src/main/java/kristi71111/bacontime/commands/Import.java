@@ -28,6 +28,5 @@ public class Import implements CommandExecutor {
             }
         }
         return CommandResult.success();
-
     }
 }

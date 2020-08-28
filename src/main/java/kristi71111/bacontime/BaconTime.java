@@ -4,16 +4,19 @@ import com.google.inject.Inject;
 import kristi71111.bacontime.commands.CommandList;
 import kristi71111.bacontime.handlers.ConfigHandler;
 import kristi71111.bacontime.handlers.DataHandler;
+import kristi71111.bacontime.handlers.objects.BaconTimePlayerObject;
 import kristi71111.bacontime.tasks.MilestoneTimedTask;
 import kristi71111.bacontime.tasks.UpdatePlayTimesTask;
 import org.slf4j.Logger;
 import org.spongepowered.api.Game;
 import org.spongepowered.api.Sponge;
 import org.spongepowered.api.config.ConfigDir;
+import org.spongepowered.api.entity.living.player.User;
 import org.spongepowered.api.event.Listener;
 import org.spongepowered.api.event.game.state.GameInitializationEvent;
 import org.spongepowered.api.event.game.state.GameStartedServerEvent;
 import org.spongepowered.api.event.game.state.GameStoppingServerEvent;
+import org.spongepowered.api.event.network.ClientConnectionEvent;
 import org.spongepowered.api.plugin.Dependency;
 import org.spongepowered.api.plugin.Plugin;
 import org.spongepowered.api.scheduler.Task;
@@ -90,6 +93,17 @@ public class BaconTime {
     @Listener
     public void onServerStopping(GameStoppingServerEvent event) {
         logger.info("Stopped BaconTime successfully!");
+    }
+
+    @Listener
+    public void OnServerJoinEvent(ClientConnectionEvent.Login event) {
+        User player = event.getTargetUser();
+        if (DataHandler.getPlayer(player.getUniqueId()) == null) {
+            DataHandler.addPlayer(new BaconTimePlayerObject(0,0,player.getName(), player.getUniqueId(), null));
+        } else if (!DataHandler.getPlayer(player.getUniqueId()).getUsername().equalsIgnoreCase(player.getName())) {
+            DataHandler.players.get(player.getUniqueId()).setUsername(player.getName());
+            DataHandler.savePlayer(player.getUniqueId());
+        }
     }
 
 }

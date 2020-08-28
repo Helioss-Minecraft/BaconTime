@@ -20,6 +20,7 @@ import org.spongepowered.api.text.format.TextColors;
 import org.spongepowered.api.text.format.TextStyles;
 
 import java.util.*;
+import java.util.Set;
 
 public class Leaderboard implements CommandExecutor {
 
