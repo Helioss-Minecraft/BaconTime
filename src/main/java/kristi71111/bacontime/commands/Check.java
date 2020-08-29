@@ -67,10 +67,9 @@ public class Check implements CommandExecutor {
                                         .build())
                                 .build());
                         List<BaconTimeMilestoneObject> milestonesSorted = new ObjectArrayList<>();
-                        for (BaconTimeMilestoneObject milestoneObject : ConfigHandler.AllMilestones.values()) {
-                            milestonesSorted.add(milestoneObject);
-                        }
+                        milestonesSorted.addAll(ConfigHandler.AllMilestones.values());
                         Collections.sort(milestonesSorted);
+                        int check = 0;
                         for (BaconTimeMilestoneObject object : milestonesSorted) {
                             if (!user.hasPermission(MilestoneCheck + "." + object.getMilestoneName()) || object.isRepeatable()) {
                                 continue;
@@ -78,10 +77,18 @@ public class Check implements CommandExecutor {
                             if (playerRecord.getMilestones() != null && !playerRecord.getMilestones().isEmpty() && playerRecord.getMilestones().containsKey(object.getMilestoneName())) {
                                 continue;
                             }
+                            check++;
                             texts.add(Text.builder()
                                     .append(Text.builder()
                                             .append(Text.of(TextColors.WHITE, " - ", TextColors.GOLD, object.getMilestoneName() + ": "))
                                             .append(Text.of(TextColors.AQUA, Helpers.convertSecondsToHoursOrMinutes(object.getRequiredTime() - playerRecord.getActiveTime())))
+                                            .build())
+                                    .build());
+                        }
+                        if(check == 0){
+                            texts.add(Text.builder()
+                                    .append(Text.builder()
+                                            .append(Text.of(TextColors.WHITE, " - ", "You already have all of the milestones!"))
                                             .build())
                                     .build());
                         }

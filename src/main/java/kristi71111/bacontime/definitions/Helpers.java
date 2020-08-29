@@ -54,7 +54,9 @@ public class Helpers {
     public static String getActivePercentage(BaconTimePlayerObject playerRecord) {
         double activeTime = playerRecord.getActiveTime();
         double afkTime = playerRecord.getAfkTime();
-        BaconTime.getLogger().info(activeTime + " " + afkTime);
+        if(afkTime == 0 && activeTime == 0){
+            return 00.00 + "%";
+        }
         double result = afkTime / activeTime;
         result *= 100;
         result = 100 - result;
