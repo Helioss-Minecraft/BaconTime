@@ -18,7 +18,7 @@ public class Set implements CommandExecutor {
     @Override
     public CommandResult execute(CommandSource src, CommandContext args) throws CommandException {
         Optional<Integer> Amount = args.getOne(Text.of("amount"));
-        if(!Amount.isPresent()){
+        if (!Amount.isPresent()) {
             throw new CommandException(Text.of(TextColors.RED, "Usage /playtime set amount player"));
         }
         User user;
@@ -35,10 +35,10 @@ public class Set implements CommandExecutor {
 
         if (!args.getOne("afk/active").isPresent() || args.getOne("afk/active").isPresent() && args.getOne("afk/active").get().equals("active")) {
             DataHandler.getPlayer(user.getUniqueId()).setActiveTime(amount);
-            src.sendMessage(Text.of(user.getName() +"s active time is now: " + Helpers.OutputTime(amount)));
-        }else{
+            src.sendMessage(Text.of(user.getName() + "s active time is now: " + Helpers.OutputTime(amount)));
+        } else {
             DataHandler.getPlayer(user.getUniqueId()).setAfkTime(amount);
-            src.sendMessage(Text.of(user.getName() +"s afk time is now: " + Helpers.OutputTime(amount)));
+            src.sendMessage(Text.of(user.getName() + "s afk time is now: " + Helpers.OutputTime(amount)));
         }
         DataHandler.savePlayer(user.getUniqueId());
         return CommandResult.success();

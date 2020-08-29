@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import com.google.common.reflect.TypeToken;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import kristi71111.bacontime.BaconTime;
+import kristi71111.bacontime.handlers.objects.BaconTimePlayerObject;
 import ninja.leaping.configurate.ConfigurationNode;
 import ninja.leaping.configurate.objectmapping.ObjectMappingException;
 import org.spongepowered.api.Game;
@@ -41,6 +42,23 @@ public class Helpers {
             }
         }
         return formats[4].contains("#") ? formats[4].replace("#", String.valueOf(time)).replace("<s>", "s") : time + "s";
+    }
+
+    public static String convertSecondsToHoursOrMinutes(int seconds) {
+        if (seconds / 3600 <= 0) {
+            return (seconds % 3600) / 60 + "m";
+        }
+        return seconds / 3600 + "h";
+    }
+
+    public static String getActivePercentage(BaconTimePlayerObject playerRecord) {
+        double activeTime = playerRecord.getActiveTime();
+        double afkTime = playerRecord.getAfkTime();
+        BaconTime.getLogger().info(activeTime + " " + afkTime);
+        double result = afkTime / activeTime;
+        result *= 100;
+        result = 100 - result;
+        return String.format("%.2f", result) + "%";
     }
 
     public static List<String> getStringList(ConfigurationNode node, String type) {

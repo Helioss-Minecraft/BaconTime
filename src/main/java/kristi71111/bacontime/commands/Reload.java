@@ -32,13 +32,13 @@ public class Reload implements CommandExecutor {
         src.sendMessage(Text.of(TextColors.GOLD, TextStyles.BOLD, "BaconTime config reloaded!"));
         BaconTime.milestoneCheck.cancel();
         if (!ConfigHandler.AllMilestones.isEmpty()) {
-        BaconTime.milestoneCheck = Sponge.getScheduler()
-                .createTaskBuilder()
-                .async()
-                .execute(new MilestoneTimedTask())
-                .interval(ConfigHandler.milestoneCheckInterval, TimeUnit.SECONDS)
-                .delay(ConfigHandler.milestoneCheckInterval, TimeUnit.SECONDS)
-                .submit(BaconTime.getInstance());
+            BaconTime.milestoneCheck = Sponge.getScheduler()
+                    .createTaskBuilder()
+                    .async()
+                    .execute(new MilestoneTimedTask())
+                    .interval(ConfigHandler.milestoneCheckInterval, TimeUnit.SECONDS)
+                    .delay(ConfigHandler.milestoneCheckInterval, TimeUnit.SECONDS)
+                    .submit(BaconTime.getInstance());
         }
         return CommandResult.success();
     }

@@ -11,7 +11,6 @@ import org.spongepowered.api.entity.living.player.Player;
 import org.spongepowered.api.scheduler.Task;
 
 import java.util.Collection;
-import java.util.List;
 
 import static kristi71111.bacontime.definitions.Helpers.MilestoneCheck;
 
@@ -23,41 +22,30 @@ public class MilestoneTimedTask implements Runnable {
             BaconTimePlayerObject playerRecord = DataHandler.getPlayer(player.getUniqueId());
             if (playerRecord == null) {
                 DataHandler.addPlayer(new BaconTimePlayerObject(0, 0, player.getName(), player.getUniqueId(), null));
-                return;
+                continue;
             }
-            List<BaconTimeReachedMilestoneObject> milestoneObjectList = playerRecord.getMilestones();
-            Whoosh:
             for (BaconTimeMilestoneObject milestoneObject : ConfigHandler.AllMilestones.values()) {
                 if (!player.hasPermission(MilestoneCheck + "." + milestoneObject.getMilestoneName())) {
                     continue;
                 }
-                if (milestoneObjectList != null) {
-                    for (BaconTimeReachedMilestoneObject reachedMilestoneObject : milestoneObjectList) {
-                        if (milestoneObject.getMilestoneName().equalsIgnoreCase(reachedMilestoneObject.getMilestoneName())) {
-                            if (milestoneObject.isRepeatable()) {
-                                if ((reachedMilestoneObject.getClaimedAt() + milestoneObject.getRequiredTime()) <= playerRecord.getActiveTime()) {
-                                    for (String command : milestoneObject.getCommands()) {
-                                        RunCommandsMain(command, player);
-                                    }
-                                    playerRecord.ReplaceMilestoneReached(new BaconTimeReachedMilestoneObject(reachedMilestoneObject.getMilestoneName(), playerRecord.getActiveTime(), true), reachedMilestoneObject.getMilestoneName());
-                                }
+                if (playerRecord.getMilestones() != null && !playerRecord.getMilestones().isEmpty() && playerRecord.getMilestones().containsKey(milestoneObject.getMilestoneName())) {
+                    if (milestoneObject.isRepeatable()) {
+                        if ((playerRecord.getMilestones().get(milestoneObject.getMilestoneName()).getClaimedAt() + milestoneObject.getRequiredTime()) <= playerRecord.getActiveTime()) {
+                            for (String command : milestoneObject.getCommands()) {
+                                RunCommandsMain(command, player);
                             }
-                            continue Whoosh;
+                            playerRecord.ReplaceMilestoneReached(new BaconTimeReachedMilestoneObject(milestoneObject.getMilestoneName(), playerRecord.getActiveTime(), true));
                         }
                     }
-                }
-                if (milestoneObject.isRepeatable() && (milestoneObject.getRequiredTime() <= playerRecord.getActiveTime())) {
+                } else if (milestoneObject.getRequiredTime() <= playerRecord.getActiveTime()) {
                     for (String command : milestoneObject.getCommands()) {
                         RunCommandsMain(command, player);
                     }
-                    playerRecord.addMilestoneReached(new BaconTimeReachedMilestoneObject(milestoneObject.getMilestoneName(), playerRecord.getActiveTime(), true));
-                    continue;
-                }
-                if (milestoneObject.getRequiredTime() <= playerRecord.getActiveTime()) {
-                    for (String command : milestoneObject.getCommands()) {
-                        RunCommandsMain(command, player);
+                    if (milestoneObject.isRepeatable()) {
+                        playerRecord.addMilestoneReached(new BaconTimeReachedMilestoneObject(milestoneObject.getMilestoneName(), playerRecord.getActiveTime(), true));
+                    } else {
+                        playerRecord.addMilestoneReached(new BaconTimeReachedMilestoneObject(milestoneObject.getMilestoneName(), playerRecord.getActiveTime(), false));
                     }
-                    playerRecord.addMilestoneReached(new BaconTimeReachedMilestoneObject(milestoneObject.getMilestoneName(), playerRecord.getActiveTime(), false));
                 }
             }
             DataHandler.players.replace(player.getUniqueId(), playerRecord);

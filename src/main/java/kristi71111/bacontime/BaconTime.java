@@ -99,7 +99,7 @@ public class BaconTime {
     public void OnServerJoinEvent(ClientConnectionEvent.Login event) {
         User player = event.getTargetUser();
         if (DataHandler.getPlayer(player.getUniqueId()) == null) {
-            DataHandler.addPlayer(new BaconTimePlayerObject(0,0,player.getName(), player.getUniqueId(), null));
+            DataHandler.addPlayer(new BaconTimePlayerObject(0, 0, player.getName(), player.getUniqueId(), null));
         } else if (!DataHandler.getPlayer(player.getUniqueId()).getUsername().equalsIgnoreCase(player.getName())) {
             DataHandler.players.get(player.getUniqueId()).setUsername(player.getName());
             DataHandler.savePlayer(player.getUniqueId());

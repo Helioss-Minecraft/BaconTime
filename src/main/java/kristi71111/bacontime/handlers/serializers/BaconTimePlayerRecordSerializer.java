@@ -15,7 +15,7 @@ public class BaconTimePlayerRecordSerializer implements JsonSerializer<BaconTime
         json.add("uuid", new JsonPrimitive(playerRecord.getUUID().toString()));
         if (playerRecord.getMilestones() != null && !playerRecord.getMilestones().isEmpty()) {
             JsonArray milestonesArray = new JsonArray();
-            for (BaconTimeReachedMilestoneObject milestone : playerRecord.getMilestones()) {
+            for (BaconTimeReachedMilestoneObject milestone : playerRecord.getMilestones().values()) {
                 JsonObject milestoneJson = new JsonObject();
                 milestoneJson.add("milestoneName", new JsonPrimitive(milestone.getMilestoneName()));
                 milestoneJson.add("reachedAt", new JsonPrimitive(milestone.getClaimedAt()));

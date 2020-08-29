@@ -3,7 +3,9 @@ package kristi71111.bacontime.commands;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import kristi71111.bacontime.BaconTime;
 import kristi71111.bacontime.definitions.Helpers;
+import kristi71111.bacontime.handlers.ConfigHandler;
 import kristi71111.bacontime.handlers.DataHandler;
+import kristi71111.bacontime.handlers.objects.BaconTimeMilestoneObject;
 import kristi71111.bacontime.handlers.objects.BaconTimePlayerObject;
 import org.spongepowered.api.command.CommandException;
 import org.spongepowered.api.command.CommandResult;
@@ -17,7 +19,10 @@ import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
 import org.spongepowered.api.text.format.TextStyles;
 
+import java.util.Collections;
 import java.util.List;
+
+import static kristi71111.bacontime.definitions.Helpers.MilestoneCheck;
 
 public class Check implements CommandExecutor {
     @Override
@@ -41,13 +46,46 @@ public class Check implements CommandExecutor {
                     List<Text> texts = new ObjectArrayList<>();
                     texts.add(Text.builder()
                             .append(Text.builder()
-                                    .append(Text.of(TextColors.GOLD, "Active time: "))
+                                    .append(Text.of(TextColors.GOLD, "Active time: ["))
+                                    .append(Text.of(Helpers.convertSecondsToHoursOrMinutes(playerRecord.getActiveTime())))
+                                    .append(Text.of(TextColors.GOLD, "] "))
                                     .append(Text.of(TextColors.AQUA, Helpers.OutputTime(playerRecord.getActiveTime())))
                                     .append(Text.NEW_LINE)
-                                    .append(Text.of(TextColors.GOLD, "AFK time: "))
+                                    .append(Text.of(TextColors.GOLD, "AFK time: ["))
+                                    .append(Text.of(Helpers.convertSecondsToHoursOrMinutes(playerRecord.getAfkTime())))
+                                    .append(Text.of(TextColors.GOLD, "] "))
                                     .append(Text.of(TextColors.AQUA, Helpers.OutputTime(playerRecord.getAfkTime())))
+                                    .append(Text.NEW_LINE)
+                                    .append(Text.of(TextColors.GOLD, "Active percentage: "))
+                                    .append(Text.of(TextColors.AQUA, Helpers.getActivePercentage(playerRecord)))
                                     .build())
                             .build());
+                    if (!ConfigHandler.AllMilestones.isEmpty()) {
+                        texts.add(Text.builder()
+                                .append(Text.builder()
+                                        .append(Text.of(TextColors.GOLD, "Time needed for milestones: "))
+                                        .build())
+                                .build());
+                        List<BaconTimeMilestoneObject> milestonesSorted = new ObjectArrayList<>();
+                        for (BaconTimeMilestoneObject milestoneObject : ConfigHandler.AllMilestones.values()) {
+                            milestonesSorted.add(milestoneObject);
+                        }
+                        Collections.sort(milestonesSorted);
+                        for (BaconTimeMilestoneObject object : milestonesSorted) {
+                            if (!user.hasPermission(MilestoneCheck + "." + object.getMilestoneName()) || object.isRepeatable()) {
+                                continue;
+                            }
+                            if (playerRecord.getMilestones() != null && !playerRecord.getMilestones().isEmpty() && playerRecord.getMilestones().containsKey(object.getMilestoneName())) {
+                                continue;
+                            }
+                            texts.add(Text.builder()
+                                    .append(Text.builder()
+                                            .append(Text.of(TextColors.WHITE, " - ", TextColors.GOLD, object.getMilestoneName() + ": "))
+                                            .append(Text.of(TextColors.AQUA, Helpers.convertSecondsToHoursOrMinutes(object.getRequiredTime() - playerRecord.getActiveTime())))
+                                            .build())
+                                    .build());
+                        }
+                    }
                     PaginationList paginationlist = new Helpers().getPaginationService().builder().footer(Text.of(TextColors.GOLD, TextStyles.BOLD, "Made by kristi71111")).padding(Text.of("-")).title(Text.builder()
                             .append(Text.builder()
                                     .append(Text.of(TextColors.GOLD, TextStyles.BOLD, "{"))

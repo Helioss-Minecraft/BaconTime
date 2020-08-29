@@ -1,18 +1,17 @@
 package kristi71111.bacontime.handlers.objects;
 
-import it.unimi.dsi.fastutil.objects.ObjectArrayList;
+import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 
-import java.util.List;
 import java.util.UUID;
 
 public class BaconTimePlayerObject {
+    private final UUID uuid;
     private int activeTime;
     private int afkTime;
     private String username;
-    final UUID uuid;
-    private List<BaconTimeReachedMilestoneObject> milestones;
+    private Object2ObjectOpenHashMap<String, BaconTimeReachedMilestoneObject> milestones;
 
-    public BaconTimePlayerObject(int activeTime, int afkTime, String username, UUID uuid, List<BaconTimeReachedMilestoneObject> milestones) {
+    public BaconTimePlayerObject(int activeTime, int afkTime, String username, UUID uuid, Object2ObjectOpenHashMap<String, BaconTimeReachedMilestoneObject> milestones) {
         this.activeTime = activeTime;
         this.afkTime = afkTime;
         this.username = username;
@@ -58,26 +57,16 @@ public class BaconTimePlayerObject {
 
     public void addMilestoneReached(BaconTimeReachedMilestoneObject object) {
         if (this.milestones == null) {
-            this.milestones = new ObjectArrayList<>();
+            this.milestones = new Object2ObjectOpenHashMap<String, BaconTimeReachedMilestoneObject>();
         }
-        this.milestones.add(object);
+        this.milestones.put(object.getMilestoneName(), object);
     }
 
-    public void ReplaceMilestoneReached(BaconTimeReachedMilestoneObject object, String name) {
-        List<BaconTimeReachedMilestoneObject> milestoneObjects = this.milestones;
-        for (BaconTimeReachedMilestoneObject object2 : milestoneObjects) {
-            if (object2.getMilestoneName().equalsIgnoreCase(name)) {
-                this.milestones.remove(object2);
-            }
-        }
-        this.milestones.add(object);
+    public void ReplaceMilestoneReached(BaconTimeReachedMilestoneObject object) {
+        this.milestones.replace(object.getMilestoneName(), object);
     }
 
-    public List<BaconTimeReachedMilestoneObject> getMilestones() {
+    public Object2ObjectOpenHashMap<String, BaconTimeReachedMilestoneObject> getMilestones() {
         return milestones;
-    }
-
-    public void setMilestones(List<BaconTimeReachedMilestoneObject> milestones) {
-        this.milestones = milestones;
     }
 }

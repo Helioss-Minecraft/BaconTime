@@ -2,7 +2,7 @@ package kristi71111.bacontime.definitions;
 
 import com.mcsimonflash.sponge.activetime.ActiveTime;
 import com.mcsimonflash.sponge.activetime.objects.ConfigHolder;
-import it.unimi.dsi.fastutil.objects.ObjectArrayList;
+import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import kristi71111.bacontime.BaconTime;
 import kristi71111.bacontime.handlers.ConfigHandler;
 import kristi71111.bacontime.handlers.DataHandler;
@@ -15,7 +15,6 @@ import org.spongepowered.api.text.Text;
 import org.spongepowered.api.text.format.TextColors;
 
 import java.nio.file.Path;
-import java.util.List;
 import java.util.UUID;
 
 public class ImportFromActiveTime {
@@ -41,12 +40,16 @@ public class ImportFromActiveTime {
                         ConfigHolder players = new ConfigHolder(storDir.resolve("players.stor"), false);
                         DataHandler.players.clear();
                         for (CommentedConfigurationNode node : players.getNode().getChildrenMap().values()) {
-                            List<BaconTimeReachedMilestoneObject> milestones = new ObjectArrayList<>();
+                            Object2ObjectOpenHashMap<String, BaconTimeReachedMilestoneObject> milestones = new Object2ObjectOpenHashMap<String, BaconTimeReachedMilestoneObject>();
                             for (CommentedConfigurationNode milestone : node.getNode("milestones").getChildrenMap().values()) {
+                                int claimedAt = 0;
+                                if (milestone.getValue() != null) {
+                                    claimedAt = (int) milestone.getValue();
+                                }
                                 if (ConfigHandler.AllMilestones.containsKey(milestone.getKey())) {
-                                    milestones.add(new BaconTimeReachedMilestoneObject((String) milestone.getKey(), (int) milestone.getValue(), ConfigHandler.AllMilestones.get(milestone.getKey()).isRepeatable()));
+                                    milestones.put((String) milestone.getKey(), new BaconTimeReachedMilestoneObject((String) milestone.getKey(), claimedAt, ConfigHandler.AllMilestones.get(milestone.getKey()).isRepeatable()));
                                 } else {
-                                    milestones.add(new BaconTimeReachedMilestoneObject((String) milestone.getKey(), (int) milestone.getValue(), false));
+                                    milestones.put((String) milestone.getKey(), new BaconTimeReachedMilestoneObject((String) milestone.getKey(), claimedAt, false));
                                 }
                             }
                             DataHandler.addPlayer(new BaconTimePlayerObject(node.getNode("activetime").getInt(), node.getNode("afktime").getInt(), node.getNode("username").getString(), UUID.fromString(node.getKey().toString()), milestones));
