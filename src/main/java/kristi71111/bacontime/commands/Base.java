@@ -24,8 +24,7 @@ public class Base implements CommandExecutor {
             i++;
             texts.add(Text.builder()
                     .append(Text.builder()
-                            .color(TextColors.GOLD)
-                            .style(TextStyles.BOLD)
+                            .color(TextColors.CYAN)
                             .append(Text.of(" - /playtime check <username>"))
                             .onClick(TextActions.runCommand("/playtime check"))
                             .onHover(TextActions.showText(Text.of("Click here to check your playtime!")))
